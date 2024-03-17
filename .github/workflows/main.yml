@@ -1,0 +1,32 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: windows-latest  
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20  
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the app
+        run: npm run build
+
+      - name: Deploy to Azure Web App (Optional, keep for reference)
+        uses: azure/webapps-deploy@v2  # Uncomment if using for deployment
+        with:
+          resourceGroup: Test-Deploy
+          appName: Azuredeploy78
+          slot-name: production  # Optional, deploy to a staging slot first
+          publish-profile: Azuredeploy78 - Web Deploy
+          package: 'dist'  # Point to the build output directory
